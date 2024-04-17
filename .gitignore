@@ -36,3 +36,5 @@ logs/
 # Other
 .DS_Store
 Thumbs.db
+
+ml_service.code-workspace
