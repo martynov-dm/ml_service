@@ -5,10 +5,12 @@ from dotenv import load_dotenv
 from telegram.ext import CommandHandler, MessageHandler, filters, ContextTypes, Application
 from telegram import ReplyKeyboardMarkup, Update
 import requests
+import json
+from src.rabbit_mq.publisher import publish_message
 
 load_dotenv('../.env')
 
-TOKEN: Final = os.getenv('TOKEN')
+TELEGRAM_TOKEN: Final = os.getenv('TELEGRAM_TOKEN')
 BOT_USERNAME: Final = os.getenv('BOT_USERNAME')
 API_URL: Final = os.getenv('API_URL')
 
@@ -29,8 +31,9 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data['state'] = 'logging_in'
 
 async def predict(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text('Введите данные для предсказания:')
+    await update.message.reply_text('Введите текст для генерации видео:')
     context.user_data['state'] = 'predicting'
+    context.user_data['chat_id'] = update.effective_chat.id
 
 async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -66,13 +69,15 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text('Ошибка авторизации.')
 
     elif user_state == 'predicting':
-        data = update.message.text
-        response = requests.post(f'{API_URL}/predict', json={'data': data})
-        if response.status_code == 200:
-            prediction = response.json()['prediction']
-            await update.message.reply_text(f'Предсказание: {prediction}')
-        else:
-            await update.message.reply_text('Ошибка предсказания.')
+        text = update.message.text
+        chat_id = context.user_data['chat_id']
+        message = {
+            'text': text,
+            'chat_id': chat_id
+        }
+        publish_message(exchange='image_generation', routing_key='', message=json.dumps(message))
+        await update.message.reply_text('Текст отправлен на обработку. Ожидайте результата.')
+
 
     elif user_state == 'depositing':
         amount = float(update.message.text)
@@ -88,9 +93,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(f'Update {update} caused error {context.error}')
 
+
+
 if __name__ == '__main__':
     print('Starting bot...')
-    app = Application.builder().token(TOKEN).build()
+    app = Application.builder().token(TELEGRAM_TOKEN).build()
 
     app.add_handler(CommandHandler('start', start))
     app.add_handler(CommandHandler('register', register))
