@@ -3,33 +3,35 @@ import json
 from src.services.cloudinary import upload_image
 from src.services.hugging_face import generate_image
 from connection import connection_params
+from src.telegram.send_message import send_message
 
 
 def callback(ch, method, properties, body):
-    message = json.loads(body)
-    text = message['text']
-    chat_id = message['chat_id']
-    print(f"Received message: {text}")
-
     try:
-        # Генерация изображения с помощью ML-сервиса
-        image_data = generate_image(text)
+        message = json.loads(body)
+        text = message['text']
+        chat_id = message['chat_id']
+        print(f"Received message: {text}")
 
-        if image_data:
+        # Генерация изображения с помощью ML-сервиса
+        image_bytes = generate_image(text)
+
+        if image_bytes:
             # Загрузка изображения на хостинг изображений
-            image_url = upload_image(image_data)
+            image_url = upload_image(image_bytes)
 
             if image_url:
                 print(f"Image uploaded successfully. URL: {image_url}")
-
-                # Отправка ссылки на изображение в чат Telegram
-                chat_id = properties.headers['chat_id']
-                # send_message(chat_id, f"Generated image: {image_url}")
+                send_message(chat_id, f"Generated image: {image_url}")
             else:
                 print("Failed to upload image.")
         else:
             print("Failed to generate image.")
 
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON: {str(e)}")
+    except KeyError as e:
+        print(f"Missing key in JSON message: {str(e)}")
     except Exception as e:
         print(f"Error processing message: {str(e)}")
 
@@ -45,8 +47,5 @@ def consume_messages(exchange, queue_name):
         channel.start_consuming()
         
         
-
-
-
 if __name__ == '__main__':
     consume_messages(exchange='image_generation', queue_name='text_queue')

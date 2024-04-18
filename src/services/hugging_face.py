@@ -1,27 +1,42 @@
-from typing import Final
+from dotenv import load_dotenv
 import requests
 import os
+import io
+from io import BytesIO
+from src.config import HUGGING_FACE_TOKEN
+from PIL import Image
 
+API_URL = "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5"
+headers = {"Authorization": f"Bearer {HUGGING_FACE_TOKEN}"}
 
-HUGGING_FACE_TOKEN: Final = os.getenv('HUGGING_FACE_TOKEN')
-MODEL_API_URL = "https://api-inference.huggingface.co/models/Melonie/text_to_image_finetuned"
-
+def query(payload):
+    try:
+        response = requests.post(API_URL, headers=headers, json=payload)
+        response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
+        return response
+    except requests.exceptions.RequestException as e:
+        print(f"Error making request to API: {str(e)}")
+        return None
 
 def generate_image(text):
-    print(HUGGING_FACE_TOKEN)
-    headers = {"Authorization": f"Bearer {HUGGING_FACE_TOKEN}"}
     payload = {"inputs": text}
+    response = query(payload)
 
-    response = requests.post(MODEL_API_URL, headers=headers, json=payload)
+    if response is None:
+        return None
 
-    print(response.json())
-    
-    # if response.status_code == 200:
-    #     image_data = response.content
-    #     image = Image.open(BytesIO(image_data))
-    #     image_path = "generated_image.jpg"
-    #     image.save(image_path)
-    #     return image_path
-    # else:
-    #     print(f"Error generating image. Status code: {response.status_code}")
-    #     return None
+    try:
+        print(f"API response status code: {response.status_code}")
+        print(f"API response content type: {response.headers['Content-Type']}")
+
+        if response.status_code == 200 and response.headers['Content-Type'] == 'application/json':
+            print(f"API response JSON: {response.json()}")
+        else:
+            print(f"API response content: {response.content}")
+
+        image_bytes = response.content
+        
+        return image_bytes
+    except Exception as e:
+        print(f"Error processing image: {str(e)}")
+        return None

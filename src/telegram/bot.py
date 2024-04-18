@@ -6,13 +6,8 @@ from telegram.ext import CommandHandler, MessageHandler, filters, ContextTypes, 
 from telegram import ReplyKeyboardMarkup, Update
 import requests
 import json
+from src.config import API_URL, TELEGRAM_TOKEN
 from src.rabbit_mq.publisher import publish_message
-
-load_dotenv('../.env')
-
-TELEGRAM_TOKEN: Final = os.getenv('TELEGRAM_TOKEN')
-BOT_USERNAME: Final = os.getenv('BOT_USERNAME')
-API_URL: Final = os.getenv('API_URL')
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = ReplyKeyboardMarkup([
