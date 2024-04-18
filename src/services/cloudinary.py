@@ -4,11 +4,11 @@ from io import BytesIO
 
 import cloudinary
 
-from src.config import CLOUDINARY_SECRET
+from src.config import CLOUDINARY_SECRET, CLOUDINARY_API_KEY
           
 cloudinary.config( 
   cloud_name = "martynov-dm", 
-  api_key = "742326812825276", 
+  api_key = CLOUDINARY_API_KEY,
   api_secret = CLOUDINARY_SECRET
 )
 

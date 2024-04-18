@@ -22,7 +22,8 @@ def callback(ch, method, properties, body):
 
             if image_url:
                 print(f"Image uploaded successfully. URL: {image_url}")
-                send_message(chat_id, f"Generated image: {image_url}")
+                message_status = send_message(chat_id, f"Generated image: {image_url}")
+                print(f"Message to {chat_id} was sent " + message_status)
             else:
                 print("Failed to upload image.")
         else:
