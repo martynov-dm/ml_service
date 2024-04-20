@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from .db import SessionLocal
+from ..database.db import SessionLocal
 from src.app.api import users
 
 app = FastAPI()

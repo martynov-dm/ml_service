@@ -38,3 +38,5 @@ logs/
 Thumbs.db
 
 ml_service.code-workspace
+rabbitmq
+.DS_Store
