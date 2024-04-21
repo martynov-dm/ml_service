@@ -2,8 +2,8 @@ import pika
 import json
 from src.services.cloudinary import upload_image
 from src.services.hugging_face import generate_image
-from connection import connection_params
 from src.telegram.send_message import send_message
+from .connection import connection_params
 
 
 def callback(ch, method, properties, body):
@@ -22,7 +22,8 @@ def callback(ch, method, properties, body):
 
             if image_url:
                 print(f"Image uploaded successfully. URL: {image_url}")
-                message_status = send_message(chat_id, f"Generated image: {image_url}")
+                message_status = send_message(
+                    chat_id, f"Generated image: {image_url}")
                 print(f"Message to {chat_id} was sent " + message_status)
             else:
                 print("Failed to upload image.")
@@ -44,9 +45,10 @@ def consume_messages(exchange, queue_name):
         channel.queue_declare(queue=queue_name, exclusive=True)
         channel.queue_bind(exchange=exchange, queue=queue_name)
         print(f"Waiting for messages in queue: {queue_name}")
-        channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
+        channel.basic_consume(
+            queue=queue_name, on_message_callback=callback, auto_ack=True)
         channel.start_consuming()
-        
-        
+
+
 if __name__ == '__main__':
     consume_messages(exchange='image_generation', queue_name='text_queue')

@@ -1,8 +1,8 @@
+import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from ..database.db import SessionLocal
-from src.app.api import users
+from src.api import users
 
 app = FastAPI()
 
@@ -25,3 +25,11 @@ app.add_middleware(
 app.include_router(router=users.router, prefix="/users", tags=["users"])
 # app.include_router(router=transactions.router, prefix="/transactions", tags=["transactions"])
 # app.include_router(router=tasks.router, prefix="/tasks", tags=["tasks"])
+
+
+host = "0.0.0.0"
+port = 8002
+
+
+if __name__ == '__main__':
+    uvicorn.run(app=app, host=host, port=port, reload=True)

@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "ml-service"
+version = "0.1.0"
+description = "generating_images_project"
+authors = ["Dmitrii Martynov"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "0.110.0"
+sqlalchemy = "2.0.29"
+uvicorn = "0.29.0"
+python-dotenv = "1.0.1"
+pytz = "2024.1"
+psycopg2-binary = "2.9.9"
+cloudinary = "1.39.1"
+pika = "1.3.2"
+pillow = "10.3.0"
+pydantic = "2.6.4"
+python-telegram-bot = "21.1.1"
+requests = "2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks]
+api = "python -m src.api.app"
+bot = "python -m src.telegram.bot"
+worker = "python -m src.rabbit_mq.worker"
+start = ["api", "bot", "worker"]
