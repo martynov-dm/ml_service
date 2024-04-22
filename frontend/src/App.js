@@ -1,26 +1,29 @@
-import { ChakraProvider, theme } from '@chakra-ui/react';
-import React from 'react';
 import {
-  BrowserRouter,
-  Route,
-  Routes
-} from "react-router-dom";
-import AuthPage from './pages/auth/index';
-import GeneratePage from './pages/generate/index';
-import ProfilePage from './pages/profile/index';
+  Box,
+  ChakraProvider,
+  Flex,
+  Grid,
+  theme,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import Router from 'router/Router';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/auth" element={<AuthPage/>} />
-          <Route path="/generate" element={<GeneratePage/>} />
-          <Route path="/profile" element={<ProfilePage/>} />
-        </Routes>
-      </BrowserRouter>
+      <Box textAlign="center" fontSize="xl">
+        <Grid minH="100vh" p={3}>
+          <Flex
+            minH={'100vh'}
+            align={'center'}
+            justify={'center'}
+            bg={useColorModeValue('gray.50', 'gray.800')}
+          >
+            <Router />
+          </Flex>
+        </Grid>
+      </Box>
     </ChakraProvider>
   );
 }
-
 export default App;
