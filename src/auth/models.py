@@ -2,7 +2,7 @@
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import Column, Integer, String, Boolean
 
-from database import Base
+from src.database import Base
 
 
 # user = Table(

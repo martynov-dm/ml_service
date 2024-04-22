@@ -11,36 +11,10 @@ class UserRead(schemas.BaseUser[int]):
     is_verified: bool = False
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserCreate(schemas.BaseUserCreate):
     username: str
     email: str
     password: str
-
-
-
-# class UserRole(str, Enum):
-#     USER = 'user'
-#     ADMIN = 'admin'
-
-# class BalanceUpdateSchema(BaseModel):
-#     amount: float
-
-# class UserBalanceSchema(BaseModel):
-#     id: int
-#     user_id: int
-#     balance: float
-
-#     class Config:
-#         orm_mode = True
-
-# class UserResponse(BaseModel):
-#     username: str
-#     is_created: bool
-#     role: UserRole
-
-# class CreateUserInput(BaseModel):
-#     username: str
-#     password: str

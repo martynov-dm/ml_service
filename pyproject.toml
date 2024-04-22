@@ -30,7 +30,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
-api = "python -m src.api.app"
+api = "python -m src.api"
 bot = "python -m src.telegram.bot"
 worker = "python -m src.rabbit_mq.worker"
 start = ["api", "bot", "worker"]

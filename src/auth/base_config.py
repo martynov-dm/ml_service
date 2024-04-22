@@ -2,9 +2,9 @@ from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import CookieTransport, AuthenticationBackend
 from fastapi_users.authentication import JWTStrategy
 
-from auth.manager import get_user_manager
-from auth.models import User
-from config import SECRET_AUTH
+from .manager import get_user_manager
+from .models import User
+from src.config import SECRET_AUTH
 
 cookie_transport = CookieTransport(cookie_name="image_prediction_app", cookie_max_age=36000)
 
@@ -23,4 +23,3 @@ fastapi_users = FastAPIUsers[User, int](
     [auth_backend],
 )
 
-current_user = fastapi_users.current_user()

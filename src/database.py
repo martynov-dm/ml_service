@@ -1,6 +1,6 @@
 from typing import AsyncGenerator
 
-from config import DATABASE_URL
+from src.config import DATABASE_URL
 from typing import AsyncGenerator
 
 from sqlalchemy import MetaData
