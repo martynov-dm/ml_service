@@ -33,4 +33,5 @@ build-backend = "poetry.core.masonry.api"
 api = "python -m src.api"
 bot = "python -m src.telegram.bot"
 worker = "python -m src.rabbit_mq.worker"
+frontend = "cd frontend && yarn start"
 start = ["api", "bot", "worker"]
