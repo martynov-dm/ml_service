@@ -1,28 +1,22 @@
 import {
-  Box,
   ChakraProvider,
   Flex,
-  Grid,
   theme,
-  useColorModeValue,
+  useColorModeValue
 } from '@chakra-ui/react';
-import Router from 'router/Router';
+import Router from './router/Router';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
+      <Flex textAlign="center" justifyContent={'center'} width='100%' height='100%' fontSize="xl" p={3} bg={useColorModeValue('gray.100', 'gray.800')}>
           <Flex
-            minH={'100vh'}
             align={'center'}
             justify={'center'}
-            bg={useColorModeValue('gray.50', 'gray.800')}
           >
             <Router />
           </Flex>
-        </Grid>
-      </Box>
+      </Flex>
     </ChakraProvider>
   );
 }

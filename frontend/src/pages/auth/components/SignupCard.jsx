@@ -4,7 +4,6 @@ import {
   Button,
   FormControl,
   FormLabel,
-  HStack,
   Heading,
   Input,
   InputGroup,
@@ -12,7 +11,7 @@ import {
   Link,
   Stack,
   Text,
-  useColorModeValue,
+  useColorModeValue
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -25,9 +24,6 @@ export default function SignupCard() {
         <Heading fontSize={'4xl'} textAlign={'center'}>
           Sign up
         </Heading>
-        <Text fontSize={'lg'} color={'gray.600'}>
-          to enjoy all of our cool features ✌️
-        </Text>
       </Stack>
       <Box
         rounded={'lg'}
@@ -36,20 +32,10 @@ export default function SignupCard() {
         p={8}
       >
         <Stack spacing={4}>
-          <HStack>
-            <Box>
-              <FormControl id="firstName" isRequired>
-                <FormLabel>First Name</FormLabel>
-                <Input type="text" />
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl id="lastName">
-                <FormLabel>Last Name</FormLabel>
-                <Input type="text" />
-              </FormControl>
-            </Box>
-          </HStack>
+        <FormControl id="username" isRequired>
+            <FormLabel>Username</FormLabel>
+            <Input type="text" />
+          </FormControl>
           <FormControl id="email" isRequired>
             <FormLabel>Email address</FormLabel>
             <Input type="email" />

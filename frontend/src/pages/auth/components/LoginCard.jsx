@@ -1,25 +1,19 @@
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
   FormLabel,
   Heading,
   Input,
-  Link,
   Stack,
-  Text,
-  useColorModeValue,
+  useColorModeValue
 } from '@chakra-ui/react';
 
 export default function LoginCard() {
   return (
     <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
       <Stack align={'center'}>
-        <Heading fontSize={'4xl'}>Sign in to your account</Heading>
-        <Text fontSize={'lg'} color={'gray.600'}>
-          to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️
-        </Text>
+        <Heading fontSize={'4xl'}>Sign in</Heading>
       </Stack>
       <Box
         rounded={'lg'}
@@ -37,14 +31,6 @@ export default function LoginCard() {
             <Input type="password" />
           </FormControl>
           <Stack spacing={10}>
-            <Stack
-              direction={{ base: 'column', sm: 'row' }}
-              align={'start'}
-              justify={'space-between'}
-            >
-              <Checkbox>Remember me</Checkbox>
-              <Link color={'blue.400'}>Forgot password?</Link>
-            </Stack>
             <Button
               bg={'blue.400'}
               color={'white'}
