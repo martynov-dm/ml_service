@@ -20,6 +20,9 @@ pillow = "10.3.0"
 pydantic = "2.6.4"
 python-telegram-bot = "21.1.1"
 requests = "2.31.0"
+fastapi-users = {extras = ["sqlalchemy"], version = "^13.0.0"}
+alembic = "^1.13.1"
+asyncpg = "^0.29.0"
 
 
 [build-system]

@@ -1,10 +1,5 @@
-from dotenv import load_dotenv
 import requests
-import os
-import io
-from io import BytesIO
 from src.config import HUGGING_FACE_TOKEN
-from PIL import Image
 
 API_URL = "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5"
 headers = {"Authorization": f"Bearer {HUGGING_FACE_TOKEN}"}

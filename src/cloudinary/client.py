@@ -1,6 +1,5 @@
 import cloudinary
 import cloudinary.uploader
-from io import BytesIO
 
 import cloudinary
 
