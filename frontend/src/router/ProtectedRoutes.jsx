@@ -1,8 +1,12 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
+import { queryClient } from "../react-query-client";
 
 const ProtectedRoutes = () => {
-  let auth = { token: false };
-  return auth.token ? <Outlet /> : <Navigate to="/auth" />;
+  const data = queryClient.getQueryData(["userData"]);
+
+  console.log(data);
+
+  return data ? <Outlet /> : <Navigate to="/auth" />;
 };
 
 export default ProtectedRoutes;
