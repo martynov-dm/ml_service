@@ -1,9 +1,16 @@
 {
-    "compilerOptions": {
-      "module": "ES6",
-      "jsx": "preserve",
-      "checkJs": true,
-      "moduleResolution": "Node"
+  "compilerOptions": {
+    "types": ["node", "vite/client"],
+    "jsx": "preserve",
+    "baseUrl": "./src",
+    "checkJs": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "paths": {
+      "@/api/*": ["./api/*"],
+      "@/pages/*": ["./pages/*"],
+      "@/utils/*": ["./utils/*"],
     },
-    "exclude": ["node_modules"]
-  }
+  },
+}

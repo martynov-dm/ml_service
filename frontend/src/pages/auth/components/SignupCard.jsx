@@ -1,5 +1,6 @@
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, InputGroup, InputRightElement, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, InputGroup, InputRightElement, Stack, useColorModeValue } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -11,14 +12,30 @@ export default function SignupCard() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  function onSubmit(values) {
+  
+  const submitForm = async (data) => {
+    // Simulating an API request
     return new Promise((resolve) => {
       setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
+        console.log(data);
         resolve();
-      }, 3000);
+      }, 2000);
     });
-  }
+  };
+
+  const mutation = useMutation({
+    mutationFn: submitForm,
+    onSuccess: () => {
+      alert('Form submitted successfully');
+    },
+    onError: () => {
+      alert('An error occurred while submitting the form');
+    },
+  });
+
+  const onSubmit = (data) => {
+    mutation.mutate(data);
+  };
 
   return (
     <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>

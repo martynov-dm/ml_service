@@ -1,17 +1,18 @@
 import requests
-from src.config import HUGGING_FACE_TOKEN
+from src.config import HUGGING_FACE_TOKEN, MODEL_API_URL
 
-API_URL = "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5"
 headers = {"Authorization": f"Bearer {HUGGING_FACE_TOKEN}"}
+
 
 def query(payload):
     try:
-        response = requests.post(API_URL, headers=headers, json=payload)
+        response = requests.post(MODEL_API_URL, headers=headers, json=payload)
         response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
         return response
     except requests.exceptions.RequestException as e:
         print(f"Error making request to API: {str(e)}")
         return None
+
 
 def generate_image(text):
     payload = {"inputs": text}
@@ -30,7 +31,7 @@ def generate_image(text):
             print(f"API response content: {response.content}")
 
         image_bytes = response.content
-        
+
         return image_bytes
     except Exception as e:
         print(f"Error processing image: {str(e)}")
