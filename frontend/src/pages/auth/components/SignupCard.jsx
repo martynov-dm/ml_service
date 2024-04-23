@@ -15,7 +15,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import authService from "../../../services/auth.service";
+import authService from "../../../services/auth";
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);

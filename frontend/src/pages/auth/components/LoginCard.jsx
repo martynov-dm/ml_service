@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import authService from "../../../services/auth.service";
+import authService from "../../../services/auth";
 
 export default function LoginCard() {
   const {

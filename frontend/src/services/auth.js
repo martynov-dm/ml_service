@@ -1,4 +1,4 @@
-import axiosClient from "./client";
+import axiosClient from "./axios-client";
 
 class AuthService {
   async register(body) {
