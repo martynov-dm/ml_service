@@ -16,6 +16,10 @@ class AuthService {
       },
     });
   }
+
+  async me() {
+    return axiosClient.get("/users/me");
+  }
 }
 
 export default new AuthService();

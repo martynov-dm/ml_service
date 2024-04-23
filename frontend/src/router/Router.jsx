@@ -1,20 +1,35 @@
+import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { useSnapshot } from "valtio";
 import AuthPage from "../pages/auth/index";
 import GeneratePage from "../pages/generate/index";
 import ProfilePage from "../pages/profile/index";
-import { store } from "../state";
+import authService from "../services/auth";
 import ProtectedRoutes from "./ProtectedRoutes";
 
 const Router = () => {
-  const { isLoggedIn, checkAuth } = useSnapshot(store.user);
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["userData"],
+    queryFn: authService.me,
+    retry: 2,
+    onSuccess: () => {},
+  });
 
   useEffect(() => {
-    checkAuth();
+    if (isError) {
+      // Redirect to auth page if there's an error fetching user data
+      window.location.href = "/auth";
+    }
+  }, [isError]);
 
-    console.log(isLoggedIn);
-  }, [checkAuth, isLoggedIn]);
+  if (isLoading) {
+    // Show loading state while fetching user data
+    return <div>Loading...</div>;
+  }
 
   return (
     <BrowserRouter>
