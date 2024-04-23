@@ -12,10 +12,10 @@ const Router = () => {
           {/* <Route path="/" element={<RedirectFromRoot />} /> */}
           <Route path="/generate" element={<GeneratePage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/auth" element={<AuthPage />} />
           <Route path="/" element={<Navigate to="/generate" />} />
-          <Route path="/*" element={<Navigate to="/auth" />} />
         </Route>
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/*" element={<Navigate to="/auth" />} />
       </Routes>
     </BrowserRouter>
   );

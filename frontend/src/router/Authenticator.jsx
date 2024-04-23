@@ -4,7 +4,6 @@ import useAuth from "../hooks/useAuth";
 
 const Authenticator = () => {
   const { user, isLoading } = useAuth();
-
   if (isLoading) {
     return (
       <Center h="100vh">

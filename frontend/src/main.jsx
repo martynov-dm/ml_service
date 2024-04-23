@@ -1,28 +1,17 @@
 import { ChakraProvider, theme } from "@chakra-ui/react";
-import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { persister, queryClient } from "./react-query-client";
+import { queryClient } from "./react-query-client";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <PersistQueryClientProvider
-        client={queryClient}
-        persistOptions={{
-          persister,
-          maxAge: 1000 * 60 * 60 * 4, // 4 hours
-          dehydrateOptions: {
-            shouldDehydrateQuery: (query) => {
-              return !!query.options.meta.persist;
-            },
-          },
-        }}
-      >
+      <QueryClientProvider client={queryClient}>
         <App />
-      </PersistQueryClientProvider>
+      </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>
 );

@@ -1,12 +1,12 @@
-import React from 'react';
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Heading, Text } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const GeneratePage = () => {
   return (
     <Box>
       <Heading>Generate</Heading>
       <Text>This is the generate page.</Text>
-      {/* Add generate form or components */}
+      <Link to={"/profile"}>Profile</Link>
     </Box>
   );
 };

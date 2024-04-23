@@ -1,4 +1,3 @@
-import { store } from "../state";
 import axiosClient from "./axios-client";
 
 class AuthService {
@@ -19,11 +18,7 @@ class AuthService {
   }
 
   async me() {
-    return axiosClient.get("/users/me").then((res) => {
-      console.log(res.data);
-      store.user.setUser(res.data);
-      return res;
-    });
+    return axiosClient.get("/users/me");
   }
 }
 
