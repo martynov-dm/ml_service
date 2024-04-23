@@ -1,16 +1,12 @@
 {
   "compilerOptions": {
-    "types": ["node", "vite/client"],
+    "types": ["vite/client"],
+    "forceConsistentCasingInFileNames": true,
     "jsx": "preserve",
     "baseUrl": "./src",
     "checkJs": true,
     "module": "es2020",
     "moduleResolution": "node",
     "target": "es2020",
-    "paths": {
-      "@/api/*": ["./api/*"],
-      "@/pages/*": ["./pages/*"],
-      "@/utils/*": ["./utils/*"],
-    },
   },
 }

@@ -1,5 +1,5 @@
-import getApiUrl from "@/utils/getApiUrl";
 import axios from "axios";
+import getApiUrl from "../utils/getApiUrl";
 import.meta.env.PROD;
 
 const axiosClient = axios.create({
@@ -8,5 +8,4 @@ const axiosClient = axios.create({
     "Content-type": "application/json",
   },
 });
-
-export default axiosClient
+export default axiosClient;

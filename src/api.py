@@ -1,10 +1,23 @@
 import uvicorn
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from src.auth.models import User
 from src.auth.schemas import UserCreate, UserRead
 from src.auth.base_config import auth_backend, fastapi_users
 
 app = FastAPI(root_path="/api")
+
+origins = [
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),

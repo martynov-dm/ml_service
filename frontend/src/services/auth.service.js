@@ -1,8 +1,8 @@
 import axiosClient from "./client";
 
 class AuthService {
-  async signUp(body) {
-    return axiosClient.post("/auth", body);
+  async register(body) {
+    return axiosClient.post("/auth/register", body);
   }
 }
 

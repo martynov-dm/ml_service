@@ -1,11 +1,11 @@
-
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import AuthPage from '../pages/auth/index';
-import GeneratePage from '../pages/generate/index';
-import ProfilePage from '../pages/profile/index';
-import ProtectedRoutes from './ProtectedRoutes';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AuthPage from "../pages/auth/index";
+import GeneratePage from "../pages/generate/index";
+import ProfilePage from "../pages/profile/index";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 const Router = () => {
+  print;
   return (
     <BrowserRouter>
       <Routes>

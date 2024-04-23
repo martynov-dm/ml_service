@@ -1,7 +1,5 @@
 import.meta.env.PROD;
 
-const isProduction = () => {
-  return import.meta.env.PROD ? true : false;
-};
+const isProduction = import.meta.env.PROD;
 
-export default isProduction
+export default isProduction;
