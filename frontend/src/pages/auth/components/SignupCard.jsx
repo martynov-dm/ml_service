@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -31,17 +30,16 @@ export default function SignupCard() {
     mutationFn: authService.register,
     onSuccess: () => {
       reset();
-      console.log("Form submitted successfully");
+      alert("Form submitted successfully");
     },
     onError: (err) => {
-      console.log(err.message);
+      alert(err.message);
     },
   });
 
   const onSubmit = (data) => {
     mutate(data);
   };
-  console.log(isPending);
 
   return (
     <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>

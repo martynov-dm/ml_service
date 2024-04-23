@@ -5,7 +5,6 @@ import ProfilePage from "../pages/profile/index";
 import ProtectedRoutes from "./ProtectedRoutes";
 
 const Router = () => {
-  print;
   return (
     <BrowserRouter>
       <Routes>
