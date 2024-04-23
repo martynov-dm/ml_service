@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import authService from "../../../services/auth";
 
 export default function LoginCard() {
@@ -20,12 +21,14 @@ export default function LoginCard() {
     reset,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
     mutationFn: authService.login,
     onSuccess: () => {
       reset();
       alert("Login successful");
+      navigate("/");
     },
     onError: (err) => {
       alert(err.message);

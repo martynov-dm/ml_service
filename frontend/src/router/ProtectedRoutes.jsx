@@ -4,8 +4,6 @@ import { queryClient } from "../react-query-client";
 const ProtectedRoutes = () => {
   const data = queryClient.getQueryData(["userData"]);
 
-  console.log(data);
-
   return data ? <Outlet /> : <Navigate to="/auth" />;
 };
 
