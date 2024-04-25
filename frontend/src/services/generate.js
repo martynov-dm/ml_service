@@ -1,9 +1,40 @@
-import axiosClient from "./axios-client";
+import getApiUrl from "../utils/getApiUrl";
 
 class GenerateService {
-  async generate(body) {
-    return axiosClient.post("/generate", body);
+  url = `${getApiUrl()}/generate`;
+  eventSource = null;
+
+  constructor() {}
+
+  connect(prompt, setStatus) {
+    const urlWithPrompt = `${this.url}?prompt=${prompt}`;
+    this.eventSource = new EventSource(urlWithPrompt, {
+      withCredentials: true,
+    });
+
+    this.eventSource.onopen = () => {
+      console.log("Connected to server");
+      setStatus("Connected");
+    };
+
+    this.eventSource.onmessage = (e) => {
+      console.log("message received", e.data);
+
+      setStatus(e.data);
+
+      if (e.data == "Image.jpg") {
+        setStatus(e.data);
+        this.disconnect();
+      }
+    };
+  }
+
+  disconnect() {
+    if (this.eventSource) {
+      this.eventSource.close();
+      this.eventSource = null;
+    }
   }
 }
 
-export default new GenerateService();
+export default GenerateService;

@@ -4,37 +4,39 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  Image,
   Input,
-  Spinner,
   VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import generateService from "../../services/generate";
+import GenerateService from "../../services/generate";
 
 const GeneratePage = () => {
   const { handleSubmit, register, reset } = useForm();
   const formBgColor = useColorModeValue("gray.50", "gray.700");
   const inputBgColor = useColorModeValue("white", "gray.600");
 
-  const {
-    mutate,
-    data: imageUrl,
-    isPending,
-  } = useMutation({
-    mutationFn: generateService.generate,
-    onSuccess: () => {
-      reset();
-    },
-    onError: (err) => {
-      alert(err.message);
-    },
-  });
+  const [status, setStatus] = useState("idle");
+  const generateServiceRef = useRef(null);
+
+  useEffect(() => {
+    // Clean up the generate service when the component unmounts
+    return () => {
+      if (generateServiceRef.current) {
+        generateServiceRef.current.disconnect();
+      }
+    };
+  }, [generateServiceRef]);
 
   const onSubmit = (data) => {
-    mutate(data);
+    reset();
+    const { prompt } = data;
+    setStatus("loading");
+
+    const newGenerateService = new GenerateService();
+    newGenerateService.connect(prompt, setStatus);
+    generateServiceRef.current = newGenerateService;
   };
 
   return (
@@ -54,17 +56,10 @@ const GeneratePage = () => {
             </Button>
           </form>
         </Box>
-        {isPending ? (
-          <Box textAlign="center">
-            <Spinner size="xl" />
-            <Box mt={4}>Generating image...</Box>
-          </Box>
-        ) : imageUrl ? (
-          <Box mt={8} borderRadius="md" overflow="hidden" boxShadow="md">
-            <Image src={imageUrl} alt="Generated" objectFit="cover" />
-          </Box>
-        ) : null}
       </VStack>
+      <Heading mb={8} textAlign="center">
+        {status}
+      </Heading>
     </Box>
   );
 };

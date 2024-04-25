@@ -4,7 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.auth.models import User
 from src.auth.schemas import UserCreate, UserRead, UserUpdate
 from src.auth.base_config import auth_backend, fastapi_users
-from src.image_generation.schemas import Prompt
+from sse_starlette.sse import EventSourceResponse
+
+import asyncio
+import json
 
 app = FastAPI(root_path="/api")
 
@@ -40,11 +43,38 @@ app.include_router(
 current_user = fastapi_users.current_user()
 
 
-@app.post("/generate")
-def protected_route(prompt: Prompt, user: User = Depends(current_user)):
-    print(user.username)
-    print(prompt.prompt)
-    return f"Hello, {user.username}"
+async def generate_events(prompt):
+    if not prompt:
+        yield json.dumps({"status": "error", "error": "Prompt is required"})
+        return
+
+    yield {
+        "event": "message",
+        "id": 1,
+        "data": "Uploading"
+    }
+
+    try:
+        # Placeholder: Simulate a delay
+        await asyncio.sleep(3)
+
+        yield {
+            "event": "message",
+            "id": 2,
+            "data": "Image.jpg"
+        }
+    except Exception as e:
+        yield {
+            "event": "message",
+            "id": 3,
+            "data": "Random error message"
+        }
+        return
+
+
+@app.get("/generate")
+def generate_image(prompt: str, user: User = Depends(current_user)):
+    return EventSourceResponse(generate_events(prompt), ping=5)
 
 
 host = "0.0.0.0"
