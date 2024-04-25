@@ -11,26 +11,20 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useForm } from "react-hook-form";
+import generateService from "../../services/generate";
 
 const GeneratePage = () => {
   const { handleSubmit, register, reset } = useForm();
-  const bgColor = useColorModeValue("gray.100", "gray.700");
-
-  const generateImage = async (data) => {
-    const response = await axios.post("/api/generate-image", {
-      prompt: data.prompt,
-    });
-    return response.data.imageUrl;
-  };
+  const formBgColor = useColorModeValue("gray.50", "gray.700");
+  const inputBgColor = useColorModeValue("white", "gray.600");
 
   const {
     mutate,
     data: imageUrl,
     isPending,
   } = useMutation({
-    mutationFn: generateImage,
+    mutationFn: generateService.generate,
     onSuccess: () => {
       reset();
     },
@@ -49,11 +43,11 @@ const GeneratePage = () => {
         Generate Image
       </Heading>
       <VStack spacing={8} align="stretch">
-        <Box bg={bgColor} p={6} borderRadius="md" boxShadow="md">
+        <Box bg={formBgColor} p={6} borderRadius="md" boxShadow="md">
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl id="prompt">
               <FormLabel>Text Prompt</FormLabel>
-              <Input type="text" {...register("prompt")} />
+              <Input type="text" {...register("prompt")} bg={inputBgColor} />
             </FormControl>
             <Button mt={4} colorScheme="teal" type="submit">
               Generate Image

@@ -10,7 +10,7 @@ function App() {
       height="100%"
       fontSize="xl"
       p={3}
-      bg={useColorModeValue("gray.100", "gray.800")}
+      bg={useColorModeValue("gray.200", "gray.800")}
     >
       <Flex align={"center"} justify={"center"}>
         <Router />

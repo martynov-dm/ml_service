@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.auth.models import User
 from src.auth.schemas import UserCreate, UserRead, UserUpdate
 from src.auth.base_config import auth_backend, fastapi_users
+from src.image_generation.schemas import Prompt
 
 app = FastAPI(root_path="/api")
 
@@ -39,14 +40,11 @@ app.include_router(
 current_user = fastapi_users.current_user()
 
 
-@app.get("/protected-route")
-def protected_route(user: User = Depends(current_user)):
+@app.post("/generate")
+def protected_route(prompt: Prompt, user: User = Depends(current_user)):
+    print(user.username)
+    print(prompt.prompt)
     return f"Hello, {user.username}"
-
-
-@app.get("/unprotected-route")
-def unprotected_route():
-    return f"Hello, anonym"
 
 
 host = "0.0.0.0"

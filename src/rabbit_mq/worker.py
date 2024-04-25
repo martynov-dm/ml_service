@@ -1,8 +1,9 @@
 import pika
 import json
-from src.services.cloudinary import upload_image
-from src.services.hugging_face import generate_image
-from src.telegram.send_message import send_message
+
+from src.cloudinary.client import upload_image
+from src.hugging_face.client import generate_image
+
 from .connection import connection_params
 
 
