@@ -1,16 +1,17 @@
 from dotenv import load_dotenv
-import os 
+import os
 
 load_dotenv('../.env')
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 BOT_USERNAME = os.getenv("BOT_USERNAME")
-API_URL = os.getenv("API_URL")
 HUGGING_FACE_TOKEN = os.getenv("HUGGING_FACE_TOKEN")
 CLOUDINARY_SECRET = os.getenv("CLOUDINARY_SECRET")
 CLOUDINARY_API_KEY = os.getenv("CLOUDINARY_API_KEY")
 RABBITMQ_USERNAME = os.getenv("RABBITMQ_USERNAME")
 RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD")
-
- 
+SECRET_AUTH = os.getenv("RABBITMQ_PASSWORD")
+MODEL_API_URL = os.getenv("MODEL_API_URL")
+API_LOCAL_URL = os.getenv("API_LOCAL_URL")
+API_PROD_URL = os.getenv("API_PROD_URL")
