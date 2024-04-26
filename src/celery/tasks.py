@@ -1,6 +1,6 @@
 from celery import Celery
 from src.config import RABBITMQ_PASSWORD, RABBITMQ_USERNAME
-from src.image_generation import upload_image
+from src.image_generation.upload_image import upload_image
 from src.image_generation.generate_image import generate_image
 from src.image_generation.models import Image
 
@@ -19,7 +19,7 @@ def generate_and_save_image(prompt):
             raise Exception("Failed to generate image")
 
         image_url = upload_image(generated_image)
-
+        
         image = Image(prompt=prompt, url=image_url)
         image.save()
 

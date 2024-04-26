@@ -4,12 +4,13 @@ import cloudinary.uploader
 import cloudinary
 
 from src.config import CLOUDINARY_SECRET, CLOUDINARY_API_KEY
-          
-cloudinary.config( 
-  cloud_name = "martynov-dm", 
-  api_key = CLOUDINARY_API_KEY,
-  api_secret = CLOUDINARY_SECRET
+
+cloudinary.config(
+    cloud_name="martynov-dm",
+    api_key=CLOUDINARY_API_KEY,
+    api_secret=CLOUDINARY_SECRET
 )
+
 
 def upload_image(image_bytes):
     try:
@@ -26,6 +27,7 @@ def upload_image(image_bytes):
 
         # Get the URL of the uploaded image
         image_url = upload_result['url']
+        print(image_url)
         return image_url
 
     except cloudinary.exceptions.Error as e:
