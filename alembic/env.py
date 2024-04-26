@@ -1,3 +1,8 @@
+from src.config import DATABASE_URL
+from src.image_generation.models import *
+from src.auth.models import *
+from src.database import metadata, Base
+from sqlalchemy.engine import Connection
 import os
 import sys
 import asyncio
@@ -8,12 +13,6 @@ from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
 sys.path.append(os.path.join(sys.path[0], 'src'))
 
-from sqlalchemy.engine import Connection
-
-from src.database import metadata, Base
-
-from src.auth.models import *
-from src.config import DATABASE_URL
 
 config = context.config
 

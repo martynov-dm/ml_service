@@ -17,12 +17,17 @@ const GeneratePage = () => {
   const { handleSubmit, register, reset } = useForm();
   const formBgColor = useColorModeValue("gray.50", "gray.700");
   const inputBgColor = useColorModeValue("white", "gray.600");
-  const [status, setStatus] = useState("connecting");
+  const [status, setStatus] = useState("idle");
   const wsManagerRef = useRef(null);
 
   useEffect(() => {
-    wsManagerRef.current = new WebSocketManager(handleStatusUpdate);
-    wsManagerRef.current.connect();
+    if (!wsManagerRef.current) {
+      wsManagerRef.current = new WebSocketManager(setStatus);
+    }
+    if (wsManagerRef.current && !wsManagerRef.current.isConnected) {
+      wsManagerRef.current.connect();
+      setStatus("connecting");
+    }
 
     return () => {
       if (wsManagerRef.current) {
@@ -31,10 +36,6 @@ const GeneratePage = () => {
       }
     };
   }, []);
-
-  const handleStatusUpdate = (newStatus) => {
-    setStatus(newStatus);
-  };
 
   const onSubmit = (promptObj) => {
     wsManagerRef.current.sendMessage(promptObj);
@@ -72,7 +73,7 @@ const GeneratePage = () => {
       </VStack>
       <Box mt={4}>
         <Text textAlign="center" fontWeight="bold">
-          Status: {isConnected ? "Text Prompt" : status}
+          {status}
         </Text>
       </Box>
     </Box>

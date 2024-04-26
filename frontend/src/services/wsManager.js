@@ -19,12 +19,15 @@ class WebSocketManager {
       this.ws.onopen = () => {
         this.isConnected = true;
         this.onUpdate("connected");
-        this.flushMessageQueue();
         resolve();
       };
 
       this.ws.onmessage = (event) => {
-        this.onUpdate(event);
+        const data = JSON.parse(event.data);
+        console.log(data);
+        if (data.status) {
+          this.onUpdate(data.status);
+        }
       };
 
       this.ws.onclose = () => {
@@ -47,16 +50,6 @@ class WebSocketManager {
     if (this.isConnected) {
       console.log("Sending message");
       this.ws.send(JSON.stringify(message));
-    } else {
-      console.log("Queuing message");
-      this.messageQueue.push(message);
-    }
-  }
-
-  flushMessageQueue() {
-    while (this.messageQueue.length > 0) {
-      const message = this.messageQueue.shift();
-      this.sendMessage(message);
     }
   }
 

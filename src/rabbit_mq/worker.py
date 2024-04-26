@@ -1,8 +1,8 @@
 import pika
 import json
 
-from src.cloudinary.client import upload_image
-from src.hugging_face.client import generate_image
+from src.image_generation.upload_image import upload_image
+from src.image_generation.generate_image import generate_image
 
 from .connection_params import connection_params
 

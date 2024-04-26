@@ -9,6 +9,9 @@ class ConnectionManager:
 
     async def connect(self, websocket: WebSocket, user_id: int):
         await websocket.accept()
+        self.updateConnection(websocket, user_id)
+
+    def updateConnection(self, websocket: WebSocket, user_id: int):
         self.active_connections[user_id] = websocket
 
     def disconnect(self, user_id: int):
@@ -21,4 +24,4 @@ class ConnectionManager:
             await websocket.send_text(message)
 
 
-manager = ConnectionManager()
+wsManager = ConnectionManager()

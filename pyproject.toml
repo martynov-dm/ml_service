@@ -26,6 +26,7 @@ celery = "^5.4.0"
 sse-starlette = "^2.1.0"
 aio-pika = "^9.4.1"
 websockets = "^12.0"
+flower = "^2.0.1"
 
 
 
@@ -44,5 +45,6 @@ api = "python -m src.api"
 bot = "python -m src.telegram.bot"
 worker = "python -m src.rabbit_mq.worker"
 frontend = "npm run dev --prefix ./frontend"
+celery = "celery -A src.celery.tasks.celery worker"
 start = ["api", "bot", "worker"]
 test = "python -m pytest tests/"
