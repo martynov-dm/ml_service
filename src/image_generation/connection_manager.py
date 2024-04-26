@@ -15,8 +15,10 @@ class ConnectionManager:
         self.active_connections.pop(user_id, None)
 
     async def send_personal_message(self, message: str, user_id: int):
+        print(self.active_connections)
         if user_id in self.active_connections:
             websocket = self.active_connections[user_id]
             await websocket.send_text(message)
+
 
 manager = ConnectionManager()
