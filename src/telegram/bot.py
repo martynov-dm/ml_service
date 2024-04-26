@@ -7,7 +7,7 @@ from telegram import ReplyKeyboardMarkup, Update
 import requests
 import json
 from src.config import API_URL, TELEGRAM_TOKEN
-from src.rabbit_mq.publisher import publish_message
+from src.rabbit_mq.publish_message import publish_message
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = ReplyKeyboardMarkup([

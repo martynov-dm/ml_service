@@ -4,7 +4,7 @@ import json
 from src.cloudinary.client import upload_image
 from src.hugging_face.client import generate_image
 
-from .connection import connection_params
+from .connection_params import connection_params
 
 
 def callback(ch, method, properties, body):
