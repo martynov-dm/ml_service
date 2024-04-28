@@ -1,13 +1,11 @@
-from tokenize import Token
-from typing import Final
-import os
-from dotenv import load_dotenv
+from fastapi.logger import logger
 from telegram.ext import CommandHandler, MessageHandler, filters, ContextTypes, Application
 from telegram import ReplyKeyboardMarkup, Update
 import requests
 import json
 from src.config import API_URL, TELEGRAM_TOKEN
 from src.rabbit_mq.publish_message import publish_message
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = ReplyKeyboardMarkup([
@@ -17,18 +15,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ])
     await update.message.reply_text('Добро пожаловать! Выберите действие:', reply_markup=reply_markup)
 
+
 async def register(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text('Введите имя пользователя:')
     context.user_data['state'] = 'registering'
+
 
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text('Введите имя пользователя:')
     context.user_data['state'] = 'logging_in'
 
+
 async def predict(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text('Введите текст для генерации видео:')
     context.user_data['state'] = 'predicting'
     context.user_data['chat_id'] = update.effective_chat.id
+
 
 async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -40,16 +42,19 @@ async def balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text('Не удалось получить баланс.')
 
+
 async def deposit(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text('Введите сумму пополнения:')
     context.user_data['state'] = 'depositing'
+
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_state = context.user_data.get('state')
 
     if user_state == 'registering':
         username = update.message.text
-        response = requests.post(f'{API_URL}/users', json={'username': username, 'password': 'default_password'})
+        response = requests.post(
+            f'{API_URL}/users', json={'username': username, 'password': 'default_password'})
         if response.status_code == 200:
             await update.message.reply_text('Регистрация успешна!')
         else:
@@ -57,7 +62,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif user_state == 'logging_in':
         username = update.message.text
-        response = requests.post(f'{API_URL}/login', json={'username': username, 'password': 'default_password'})
+        response = requests.post(
+            f'{API_URL}/login', json={'username': username, 'password': 'default_password'})
         if response.status_code == 200:
             await update.message.reply_text('Авторизация успешна!')
         else:
@@ -70,14 +76,15 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             'text': text,
             'chat_id': chat_id
         }
-        publish_message(exchange='image_generation', routing_key='', message=json.dumps(message))
+        publish_message(exchange='image_generation',
+                        routing_key='', message=json.dumps(message))
         await update.message.reply_text('Текст отправлен на обработку. Ожидайте результата.')
-
 
     elif user_state == 'depositing':
         amount = float(update.message.text)
         user_id = update.effective_user.id
-        response = requests.post(f'{API_URL}/users/{user_id}/balance', json={'amount': amount})
+        response = requests.post(
+            f'{API_URL}/users/{user_id}/balance', json={'amount': amount})
         if response.status_code == 200:
             await update.message.reply_text('Баланс успешно пополнен!')
         else:
@@ -85,13 +92,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     context.user_data['state'] = None
 
-async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print(f'Update {update} caused error {context.error}')
 
+async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger.info(f'Update {update} caused error {context.error}')
 
 
 if __name__ == '__main__':
-    print('Starting bot...')
+    logger.info('Starting bot...')
     app = Application.builder().token(TELEGRAM_TOKEN).build()
 
     app.add_handler(CommandHandler('start', start))
@@ -104,5 +111,5 @@ if __name__ == '__main__':
     app.add_handler(MessageHandler(filters.TEXT, handle_message))
     app.add_error_handler(error)
 
-    print('Polling...')
+    logger.info('Polling...')
     app.run_polling(poll_interval=3)

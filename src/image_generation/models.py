@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from src.database import Base
+from src.auth.models import *
+from src.auth.models import User  # import P
 
 
 class Image(Base):
@@ -11,4 +13,4 @@ class Image(Base):
     url = Column(String, nullable=False)
     user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
 
-    user = relationship("User", back_populates="images")
+    user = relationship(User, back_populates="images")

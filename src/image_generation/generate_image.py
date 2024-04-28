@@ -1,3 +1,4 @@
+from fastapi.logger import logger
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
@@ -23,7 +24,7 @@ def query(payload, max_retries=3, backoff_factor=1):
             response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
             return response
         except requests.exceptions.RequestException as e:
-            print(f"Error making request to API: {str(e)}")
+            logger.error(f"Error making request to API: {str(e)}")
             return None
 
 
@@ -34,14 +35,15 @@ def generate_image(text):
         return None
 
     try:
-        print(f"API response status code: {response.status_code}")
-        print(f"API response content type: {response.headers['Content-Type']}")
+        logger.info(f"API response status code: {response.status_code}")
+        logger.info(f"API response content type: {
+                    response.headers['Content-Type']}")
         if response.status_code == 200 and response.headers['Content-Type'] == 'application/json':
-            print(f"API response JSON: {response.json()}")
+            logger.info(f"API response JSON: {response.json()}")
         else:
-            print(f"API response content: {response.content}")
+            logger.warning(f"API response content: {response.content}")
         image_bytes = response.content
         return image_bytes
     except Exception as e:
-        print(f"Error processing image: {str(e)}")
+        logger.error(f"Error processing image: {str(e)}")
         return None

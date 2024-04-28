@@ -9,7 +9,6 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<Authenticator />}>
-          {/* <Route path="/" element={<RedirectFromRoot />} /> */}
           <Route path="/generate" element={<GeneratePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/" element={<Navigate to="/generate" />} />

@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import WebSocketManager from "../../services/wsManager";
+import wsManager from "../../services/wsManager";
 
 const GeneratePage = () => {
   const { handleSubmit, register, reset } = useForm();
@@ -22,26 +22,25 @@ const GeneratePage = () => {
 
   useEffect(() => {
     if (!wsManagerRef.current) {
-      wsManagerRef.current = new WebSocketManager(setStatus);
+      wsManagerRef.current = wsManager;
     }
     if (wsManagerRef.current && !wsManagerRef.current.isConnected) {
-      wsManagerRef.current.connect();
-      setStatus("connecting");
+      wsManagerRef.current.connect(setStatus);
     }
 
     return () => {
       if (wsManagerRef.current) {
-        wsManagerRef.current.disconnect();
+        wsManagerRef.current.disconnect(setStatus);
         wsManagerRef.current = null;
       }
     };
   }, []);
 
   const onSubmit = (promptObj) => {
-    wsManagerRef.current.sendMessage(promptObj);
+    wsManagerRef.current.sendMessage(promptObj, setStatus);
   };
 
-  const isConnected = status === "connected";
+  const isConnected = status === "Connected";
 
   return (
     <Box maxW="2xl" mx="auto" py={8}>

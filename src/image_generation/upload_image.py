@@ -2,6 +2,7 @@ import cloudinary
 import cloudinary.uploader
 
 import cloudinary
+from fastapi.logger import logger
 
 from src.config import CLOUDINARY_SECRET, CLOUDINARY_API_KEY
 
@@ -14,7 +15,7 @@ cloudinary.config(
 
 def upload_image(image_bytes):
     try:
-        print("Uploading image to Cloudinary...")
+        logger.info("Uploading image to Cloudinary...")
 
         # Upload the image to Cloudinary
         upload_result = cloudinary.uploader.upload(
@@ -27,13 +28,13 @@ def upload_image(image_bytes):
 
         # Get the URL of the uploaded image
         image_url = upload_result['url']
-        print(image_url)
+        logger.info('image_url', image_url)
         return image_url
 
     except cloudinary.exceptions.Error as e:
-        print(f"Error uploading image to Cloudinary: {str(e)}")
+        logger.error(f"Error uploading image to Cloudinary: {str(e)}")
         return None
 
     except Exception as e:
-        print(f"Error processing image: {str(e)}")
+        logger.error(f"Error processing image: {str(e)}")
         return None
