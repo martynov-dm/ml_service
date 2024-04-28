@@ -1,4 +1,4 @@
-from fastapi.logger import logger
+from src.fastapi_logger import fastapi_logger
 from telegram.ext import CommandHandler, MessageHandler, filters, ContextTypes, Application
 from telegram import ReplyKeyboardMarkup, Update
 import requests
@@ -94,11 +94,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info(f'Update {update} caused error {context.error}')
+    fastapi_logger.info(f'Update {update} caused error {context.error}')
 
 
 if __name__ == '__main__':
-    logger.info('Starting bot...')
+    fastapi_logger.info('Starting bot...')
     app = Application.builder().token(TELEGRAM_TOKEN).build()
 
     app.add_handler(CommandHandler('start', start))
@@ -111,5 +111,5 @@ if __name__ == '__main__':
     app.add_handler(MessageHandler(filters.TEXT, handle_message))
     app.add_error_handler(error)
 
-    logger.info('Polling...')
+    fastapi_logger.info('Polling...')
     app.run_polling(poll_interval=3)

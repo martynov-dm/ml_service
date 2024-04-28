@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.pool import NullPool
 
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from fastapi.logger import logger
+from src.fastapi_logger import fastapi_logger
 
 Base = declarative_base()
 metadata = MetaData()
@@ -39,4 +39,4 @@ def get_sync_session():
         try:
             session.close()
         except Exception as e:
-            logger.error(f"Error closing database session: {e}")
+            fastapi_logger.error(f"Error closing database session: {e}")
