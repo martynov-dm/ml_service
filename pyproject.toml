@@ -50,4 +50,6 @@ start = ["api", "bot", "worker"]
 test = "python -m pytest tests/"
 build_api = "docker build -t api -f src/Dockerfile ."
 run_api = "docker run --rm --env-file .env api start"
-up = "docker compose up"
+build_frontend = "docker build -t frontend -f nginx/Dockerfile ."
+run_frontend = "docker run --rm --env-file .env frontend start"
+up = "docker-compose up --build --force-recreate --no-deps"
