@@ -24,3 +24,9 @@ SECRET_AUTH = os.getenv("SECRET_AUTH")
 JWT_COOKIE_NAME = os.getenv("JWT_COOKIE_NAME")
 API_LOCAL_URL = os.getenv("API_LOCAL_URL")
 API_PROD_URL = os.getenv("API_PROD_URL")
+
+
+if os.environ.get('DOCKER_ENV'):
+    RABBITMQ_HOST = 'rabbitmq'
+else:
+    RABBITMQ_HOST = 'localhost'

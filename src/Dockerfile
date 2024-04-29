@@ -11,6 +11,8 @@ ENV POETRY_HOME=/opt/poetry \
     PYSETUP_PATH=/opt/poetry/libpython \
     PATH="$POETRY_HOME/bin:$PATH"
 
+ENV DOCKER_ENV=1
+
 # Create a new poetry project
 WORKDIR /app
 
