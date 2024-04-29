@@ -1,4 +1,4 @@
-from src.celery.celery_logger import celery_logger
+from src.celery_worker.celery_logger import celery_logger
 from src.database import get_sync_session
 from src.image_generation.models import Image
 from src.image_generation.schemas import ImageInfo

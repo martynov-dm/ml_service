@@ -8,7 +8,7 @@ from src.auth.schemas import UserCreate, UserRead, UserUpdate
 from src.auth.base_config import auth_backend, fastapi_users
 from fastapi import WebSocket
 from fastapi.middleware.cors import CORSMiddleware
-from src.celery.tasks import generate_and_save_image
+from src.celery_worker.tasks import generate_and_save_image
 from src.image_generation.connection_manager import wsManager
 from src.image_generation.schemas import ImageInfo
 from src.utils.get_user_from_cookie import get_user_from_cookie

@@ -48,3 +48,5 @@ frontend = "npm run dev --prefix ./frontend"
 celery = "celery -A src.celery.tasks.celery worker --loglevel=INFO"
 start = ["api", "bot", "worker"]
 test = "python -m pytest tests/"
+build_api = "docker build -t api -f src/Dockerfile ."
+run_api = "docker run --rm --env-file .env api start"
