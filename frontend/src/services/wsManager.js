@@ -1,3 +1,11 @@
+export const connectionStatuses = {
+  idle: "Idle",
+  connected: "Connected",
+  closed: "Connection closed",
+  error: "Error",
+  disconnecing: "Disconnecing",
+};
+
 class WebSocketManager {
   WS_URL = "ws://localhost:8002/api/generate";
 
@@ -7,7 +15,7 @@ class WebSocketManager {
     this.isConnected = false;
   }
 
-  connect(setStatus) {
+  connect(setStatus, setImageUrl) {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       return Promise.resolve();
     }
@@ -17,28 +25,31 @@ class WebSocketManager {
 
       this.ws.onopen = () => {
         this.isConnected = true;
-        setStatus("Connected");
+        setStatus(connectionStatuses.connected);
         resolve();
       };
 
       this.ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         console.log(data);
-        if (data.status) {
+        if (data?.status) {
           setStatus(data.status);
+        }
+        if (data?.message?.url) {
+          setImageUrl(data.message.url);
         }
       };
 
       this.ws.onclose = (event) => {
         this.isConnected = false;
-        setStatus("Connection closed");
+        setStatus(connectionStatuses.closed);
         console.log(event);
         reject(new Error("WebSocket connection closed"));
       };
 
       this.ws.onerror = (error) => {
         this.isConnected = false;
-        setStatus("error");
+        setStatus(connectionStatuses.error);
         console.error("WebSocket error:", error);
         reject(error);
       };
@@ -55,11 +66,11 @@ class WebSocketManager {
 
   disconnect(setStatus) {
     if (this.ws) {
-      setStatus("disconnecting");
+      setStatus(connectionStatuses.disconnecing);
       this.ws.close();
       this.ws = null;
     }
   }
 }
 
-export default new WebSocketManager();
+export const wsManager = new WebSocketManager();

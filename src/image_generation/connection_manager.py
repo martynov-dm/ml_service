@@ -12,12 +12,15 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket, user_id: int):
         try:
             await websocket.accept()
-            self.active_connections[user_id] = websocket
+            self.add_connection(websocket, user_id)
             fastapi_logger.info(
                 f"New WebSocket connection established for user_id {user_id}")
         except Exception as e:
             fastapi_logger.error(f"Error accepting WebSocket connection for user_id {
                 user_id}: {e}")
+
+    def add_connection(self, websocket: WebSocket, user_id: int):
+        self.active_connections[user_id] = websocket
 
     def disconnect(self, user_id: int):
         if user_id in self.active_connections:

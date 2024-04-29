@@ -4,6 +4,7 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Image,
   Input,
   Text,
   VStack,
@@ -11,13 +12,14 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import wsManager from "../../services/wsManager";
+import { connectionStatuses, wsManager } from "../../services/wsManager";
 
 const GeneratePage = () => {
   const { handleSubmit, register, reset } = useForm();
   const formBgColor = useColorModeValue("gray.50", "gray.700");
   const inputBgColor = useColorModeValue("white", "gray.600");
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState(connectionStatuses.idle);
+  const [imageUrl, setImageUrl] = useState("");
   const wsManagerRef = useRef(null);
 
   useEffect(() => {
@@ -25,9 +27,8 @@ const GeneratePage = () => {
       wsManagerRef.current = wsManager;
     }
     if (wsManagerRef.current && !wsManagerRef.current.isConnected) {
-      wsManagerRef.current.connect(setStatus);
+      wsManagerRef.current.connect(setStatus, setImageUrl);
     }
-
     return () => {
       if (wsManagerRef.current) {
         wsManagerRef.current.disconnect(setStatus);
@@ -38,12 +39,13 @@ const GeneratePage = () => {
 
   const onSubmit = (promptObj) => {
     wsManagerRef.current.sendMessage(promptObj, setStatus);
+    reset();
   };
 
-  const isConnected = status === "Connected";
+  const isConnected = status === connectionStatuses.connected;
 
   return (
-    <Box maxW="2xl" mx="auto" py={8}>
+    <Box mt={"35px"} minW={"35vw"} mx="auto" py={8}>
       <Heading mb={8} textAlign="center">
         Generate Image
       </Heading>
@@ -57,6 +59,7 @@ const GeneratePage = () => {
                 {...register("prompt")}
                 bg={inputBgColor}
                 isDisabled={!isConnected}
+                w="100%"
               />
             </FormControl>
             <Button
@@ -72,9 +75,25 @@ const GeneratePage = () => {
       </VStack>
       <Box mt={4}>
         <Text textAlign="center" fontWeight="bold">
-          {status}
+          Connection Status: {status}
         </Text>
       </Box>
+      {imageUrl && (
+        <Box mt={8}>
+          <Image
+            src={
+              "http://res.cloudinary.com/martynov-dm/image/upload/v1714382074/generated_images/klzhbiz8ciiunzcdczwe.jpg"
+            }
+            alt="Generated Image"
+            borderRadius="md"
+            boxShadow="md"
+            objectFit="cover"
+            w="100%"
+            h="auto"
+            maxH="400px"
+          />
+        </Box>
+      )}
     </Box>
   );
 };

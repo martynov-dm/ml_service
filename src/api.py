@@ -63,10 +63,10 @@ async def websocket_endpoint(websocket: WebSocket, user: User = Depends(get_user
                 current_time = datetime.now().strftime("%H:%M")
                 message = {
                     "time": current_time,
-                    "user_id": user_id,
                     "message": f'Received prompt: "{prompt}"',
                     "status": "processing"
                 }
+                wsManager.add_connection(websocket, user_id)
                 await wsManager.send_personal_message(json.dumps(message), user_id)
                 fastapi_logger.info(f'Started task for prompt: {prompt}')
 
@@ -76,22 +76,22 @@ async def websocket_endpoint(websocket: WebSocket, user: User = Depends(get_user
                 saved_image: ImageInfo = result.get()
                 fastapi_logger.info(
                     f'Image returned from worker: {saved_image}')
+
                 if saved_image is None:
                     # Handle the case when image generation fails
                     message = {
                         "time": current_time,
                         "user_id": user_id,
                         "message": "Failed to generate image",
-                        "status": "error"
+                        "status": "Error"
                     }
                     await wsManager.send_personal_message(json.dumps(message), user_id)
                 else:
                     # Send the image URL to the frontend
                     message = {
                         "time": current_time,
-                        "user_id": user_id,
-                        "message": f'Image generated: "{saved_image.url}"',
-                        "status": "completed"
+                        "message": saved_image,
+                        "status": "Completed"
                     }
                     await wsManager.send_personal_message(json.dumps(message), user_id)
     except WebSocketDisconnect:

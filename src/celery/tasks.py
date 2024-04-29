@@ -33,6 +33,7 @@ def generate_and_save_image(prompt, user_id):
             celery_logger.error("Failed to save to db")
             return None
 
+        celery_logger.info(f"Task is finished with {saved_image}")
         return saved_image
     except Exception as e:
         celery_logger.error(f"Error generating and saving image: {e}")
