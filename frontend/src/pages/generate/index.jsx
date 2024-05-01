@@ -12,15 +12,22 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import { connectionStatuses, wsManager } from "../../services/wsManager";
 
 const GeneratePage = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const { handleSubmit, register, reset } = useForm();
   const formBgColor = useColorModeValue("gray.50", "gray.700");
   const inputBgColor = useColorModeValue("white", "gray.600");
   const [status, setStatus] = useState(connectionStatuses.idle);
   const [imageUrl, setImageUrl] = useState("");
   const wsManagerRef = useRef(null);
+  console.log(user);
+  if (!user) navigate("/");
 
   useEffect(() => {
     if (!wsManagerRef.current) {
