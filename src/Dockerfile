@@ -29,4 +29,4 @@ COPY src ./src
 ENV PYTHONPATH=/app/src:"$PYTHONPATH"
 
 # Entrypoint
-ENTRYPOINT ["poe", "api"]
+ENTRYPOINT ["poe", "api_prod"]

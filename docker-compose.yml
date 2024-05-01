@@ -23,6 +23,8 @@ services:
       - .env
     ports:
       - 8002:8002
+    networks:
+      - nginx_network
     depends_on:
       - rabbitmq
 
@@ -33,12 +35,21 @@ services:
     env_file:
       - .env
     entrypoint: ["poe", "celery"]
+    networks:
+      - nginx_network
     depends_on:
       - rabbitmq
 
   nginx:
-    build:
-      context: .
-      dockerfile: nginx/Dockerfile
-    ports:
-      - "80:80"
+      build:
+        context: .
+        dockerfile: nginx/Dockerfile
+      ports:
+        - "80:80"
+      networks:
+        - nginx_network
+      depends_on:
+        - api
+networks:
+  nginx_network:
+    driver: bridge
