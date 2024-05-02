@@ -4,7 +4,6 @@ import useAuth from "../hooks/useAuth";
 
 // eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ children }) => {
-  console.log("Auth component is called");
   const { user, isLoading } = useAuth();
   console.log(user);
 

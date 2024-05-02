@@ -88,9 +88,7 @@ const GeneratePage = () => {
       {imageUrl && (
         <Box mt={8}>
           <Image
-            src={
-              "http://res.cloudinary.com/martynov-dm/image/upload/v1714382074/generated_images/klzhbiz8ciiunzcdczwe.jpg"
-            }
+            src={imageUrl}
             alt="Generated Image"
             borderRadius="md"
             boxShadow="md"

@@ -18,7 +18,6 @@ class AuthService {
   }
 
   async me() {
-    console.log("me called");
     return axiosClient.get("/users/me");
   }
 }

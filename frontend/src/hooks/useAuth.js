@@ -8,7 +8,6 @@ const useAuth = () => {
     retry: 0,
     staleTime: 1000 * 60 * 60 * 4, // 4 hours
   });
-  console.log(data);
   return {
     user: data?.data,
     isLoading,
