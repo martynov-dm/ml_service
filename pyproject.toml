@@ -41,10 +41,11 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
-api = "python -m src.api"
+api_dev = "python -m src.api"
+api_prod = "uvicorn src.api:app --host 0.0.0.0 --port 8002"
 bot = "python -m src.telegram.bot"
-worker = "python -m src.rabbit_mq.worker"
 frontend = "npm run dev --prefix ./frontend"
-celery = "celery -A src.celery.tasks.celery worker --loglevel=INFO"
-start = ["api", "bot", "worker"]
+celery = "celery -A src.celery_worker.tasks.celery_worker worker --loglevel=INFO"
+start = ["api_dev", "bot", "celery"]
 test = "python -m pytest tests/"
+up = "docker-compose up --build --force-recreate --no-deps"

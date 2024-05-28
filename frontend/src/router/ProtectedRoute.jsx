@@ -1,9 +1,12 @@
 import { Center, Spinner } from "@chakra-ui/react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
-const Authenticator = () => {
+// eslint-disable-next-line react/prop-types
+const ProtectedRoute = ({ children }) => {
   const { user, isLoading } = useAuth();
+  console.log(user);
+
   if (isLoading) {
     return (
       <Center h="100vh">
@@ -12,7 +15,7 @@ const Authenticator = () => {
     );
   }
 
-  return user ? <Outlet /> : <Navigate to="/auth" />;
+  return user ? children : <Navigate to="/auth" />;
 };
 
-export default Authenticator;
+export default ProtectedRoute;

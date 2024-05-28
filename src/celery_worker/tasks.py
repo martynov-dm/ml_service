@@ -1,20 +1,20 @@
 from celery import Celery
-from src.celery.celery_logger import celery_logger
-from src.config import RABBITMQ_PASSWORD, RABBITMQ_USERNAME
-from src.celery.generate_and_save_image.save_to_db import save_to_db
-from src.celery.generate_and_save_image.upload_image import upload_image
-from src.celery.generate_and_save_image.generate_image import generate_image
+from src.celery_worker.celery_logger import celery_logger
+from src.config import RABBITMQ_PASSWORD, RABBITMQ_USERNAME, RABBITMQ_HOST
+from src.celery_worker.generate_and_save_image.save_to_db import save_to_db
+from src.celery_worker.generate_and_save_image.upload_image import upload_image
+from src.celery_worker.generate_and_save_image.generate_image import generate_image
 
 
-celery = Celery(
+celery_worker = Celery(
     'tasks',
-    broker=f'amqp://{RABBITMQ_USERNAME}:{RABBITMQ_PASSWORD}@localhost:5672//'
+    broker=f'amqp://{RABBITMQ_USERNAME}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:5672//'
 )
-celery.conf.broker_connection_retry_on_startup = True
-celery.conf.result_backend = 'rpc://'
+celery_worker.conf.broker_connection_retry_on_startup = True
+celery_worker.conf.result_backend = 'rpc://'
 
 
-@celery.task
+@celery_worker.task
 def generate_and_save_image(prompt, user_id):
 
     try:

@@ -28,7 +28,8 @@ export default function LoginCard() {
     onSuccess: () => {
       reset();
       alert("Login successful");
-      navigate("/");
+      console.log("navigating to / generate");
+      navigate("/generate");
     },
     onError: (err) => {
       alert(err.message);

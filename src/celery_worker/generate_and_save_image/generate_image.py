@@ -1,7 +1,7 @@
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
-from src.celery.celery_logger import celery_logger
+from src.celery_worker.celery_logger import celery_logger
 from src.config import HUGGING_FACE_TOKEN, MODEL_API_URL
 headers = {"Authorization": f"Bearer {HUGGING_FACE_TOKEN}"}
 

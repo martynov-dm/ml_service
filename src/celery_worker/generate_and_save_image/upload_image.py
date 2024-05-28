@@ -3,7 +3,7 @@ import cloudinary.uploader
 
 import cloudinary
 
-from src.celery.celery_logger import celery_logger
+from src.celery_worker.celery_logger import celery_logger
 from src.config import CLOUDINARY_SECRET, CLOUDINARY_API_KEY
 
 cloudinary.config(
